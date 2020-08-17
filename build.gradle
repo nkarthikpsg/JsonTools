@@ -1,0 +1,54 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:2.4.0.RELEASE")
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.4.0-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'com.nk.tools'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+bootJar {
+	baseName = 'json-tools'
+	version =  '0.1.0'
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+
+	compile("org.apache.commons:commons-lang3:3.9")
+	compile("org.apache.commons:commons-collections4:4.3")
+	compile("commons-io:commons-io:2.6")
+	compile("com.fasterxml.jackson.core:jackson-core:2.9.9")
+	compile("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.9.9")
+	compile("com.fasterxml.jackson.core:jackson-annotations:2.9.9")
+	compile("com.fasterxml.jackson.core:jackson-databind:2.9.9")
+	compile("com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.9.9")
+	compile("com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.9.9")
+	compile("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.9")
+	compile("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.9")
+	compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9")
+	compile("com.fasterxml.jackson.module:jackson-module-afterburner:2.9.9")
+	compile("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.9")
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	useJUnitPlatform()
+}
