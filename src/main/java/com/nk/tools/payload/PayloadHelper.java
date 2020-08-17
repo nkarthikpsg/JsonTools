@@ -1,19 +1,13 @@
 package com.nk.tools.payload;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +26,11 @@ public class PayloadHelper
     {
         try
         {
-            Map<String, Object> inputMap = objectMapper.readValue(input, Map.class);
+            Map<String, Object> inputAndTemplateMap = objectMapper.readValue(input, Map.class);
+
+            Map<String, Object> inputMap = (Map) inputAndTemplateMap.get("Input");
+            Map<String, Object> templateMap = (Map) inputAndTemplateMap.get("Template");
+
             if(inputMap.containsKey("data") && inputMap.containsKey("success"))
             {
                 Object data = inputMap.get("data");
@@ -41,9 +39,6 @@ public class PayloadHelper
                 if(data instanceof List && ObjectUtils.isNotEmpty(data))
                     inputMap = (Map<String, Object>)((List)data).get(0);
             }
-            String template = getTemplate(inputMap.containsKey("PaymentMethod") ? "Payment.json" : "Order_Invoice.json");
-            Map<String, Object> templateMap = objectMapper.readValue(template, Map.class);
-//            templateMap = convertToTemplate(templateMap);
             Map<String, Object> outputMap = applyTemplateOnDTOMap(inputMap, templateMap);
 
             String output = objectMapper.writeValueAsString(outputMap);
@@ -61,7 +56,6 @@ public class PayloadHelper
         if (template == null || dtoMap == null || dtoMap.isEmpty())
             return dtoMap;
 
-        boolean condition = true;
         Map<String, Object> output = new HashMap<>();
         for (Map.Entry<String, Object> entry : template.entrySet())
         {
@@ -84,62 +78,10 @@ public class PayloadHelper
             }
             else
             {
-                if(templateValue != null && !Objects.equals(templateValue, obj))
-                {
-                    condition = false;
-                    break;
-                }
                 output.put(name, obj);
             }
         }
-
-        return !condition ? null : output;
-    }
-
-    private String getTemplate(String fileName)
-    {
-        String query = null;
-        Resource resource = resourceLoader.getResource("classpath:/promQueries/" + fileName);
-        try
-        {
-            InputStream file = resource.getInputStream();
-            if (file != null)
-            {
-                query = IOUtils.toString(file, StandardCharsets.UTF_8);
-            }
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-        return query;
-    }
-
-    private Map<String, Object> convertToTemplate(Map<String, Object> templateMap)
-    {
-        Map<String, Object> template = new HashMap<>();
-
-        addEntries(templateMap.entrySet(), template);
-
-        return template;
-    }
-
-    private void addEntries(Set<Map.Entry<String, Object>> entrySet, Map<String, Object> template)
-    {
-        for (Map.Entry<String, Object> entry : entrySet)
-        {
-            if (entry.getValue() instanceof Map)
-            {
-                Map<String, Object> childTemplate = new HashMap<>();
-                template.put(entry.getKey(), childTemplate);
-                Map<String, Object> childMap = (Map<String, Object>) entry.getValue();
-                addEntries(childMap.entrySet(), childTemplate);
-            }
-            else
-            {
-                template.put(entry.getKey(), null);
-            }
-        }
+        return output;
     }
 
 }

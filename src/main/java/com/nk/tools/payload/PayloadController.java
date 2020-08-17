@@ -15,9 +15,9 @@ public class PayloadController
     PayloadHelper payloadHelper;
 
     @RequestMapping(value = "clean", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String cleanPayload(@RequestBody String input)
+    public String cleanPayload(@RequestBody String inputAndTemplate)
     {
-        String cleanPayload = payloadHelper.getCleanPayload(input);
+        String cleanPayload = payloadHelper.getCleanPayload(inputAndTemplate);
 
         return cleanPayload;
     }
