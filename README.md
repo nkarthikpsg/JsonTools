@@ -77,10 +77,78 @@ Returns JSON structured like this:
 
 ```json
 {
-  "anomalies": [
-    "2018-01-10",
-    "2018-01-13"
-  ]
+    "ParentId": "id_aug_30_01",
+    "ParentRandomId": "120acdc6-48cb-47ce-969c-413314038e3f",
+    "ParentName": "First Last",
+    "ParentAge": 30,
+    "Child": [
+        {
+            "ChildType": "Type1",
+            "ChildId": "Type1_1",
+            "ChildTypeSerial": 1
+        },
+        {
+            "ChildType": "Type1",
+            "ChildId": "Type1_2",
+            "ChildTypeSerial": 2
+        },
+        {
+            "ChildType": "Type1",
+            "ChildId": "Type1_3",
+            "ChildTypeSerial": 3
+        },
+        {
+            "ChildType": "Type2",
+            "ChildId": "Type3_1",
+            "ChildTypeSerial": 1,
+            "GrandChild": [
+                {
+                    "GarndChildType": "Type2",
+                    "GrandChildId": "Type2_1",
+                    "ChildTypeSerial": 1
+                },
+                {
+                    "GarndChildType": "Type2",
+                    "GrandChildId": "Type2_2",
+                    "ChildTypeSerial": 2
+                }
+            ]
+        },
+        {
+            "ChildType": "Type2",
+            "ChildId": "Type3_2",
+            "ChildTypeSerial": 2,
+            "GrandChild": [
+                {
+                    "GarndChildType": "Type2",
+                    "GrandChildId": "Type2_1",
+                    "ChildTypeSerial": 1
+                },
+                {
+                    "GarndChildType": "Type2",
+                    "GrandChildId": "Type2_2",
+                    "ChildTypeSerial": 2
+                }
+            ]
+        }
+    ],
+    "Sibling": [
+        {
+            "SiblingType": "Type1",
+            "SiblingId": "Type1_1",
+            "SiblingTypeSerial": 1
+        },
+        {
+            "SiblingType": "Type1",
+            "SiblingId": "Type1_2",
+            "SiblingTypeSerial": 2
+        },
+        {
+            "SiblingType": "Type1",
+            "SiblingId": "Type1_3",
+            "SiblingTypeSerial": 3
+        }
+    ]
 }
 ```
 
