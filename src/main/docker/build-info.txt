@@ -1,0 +1,6 @@
+./gradlew clean build
+
+docker build --build-arg JAR_FILE="build/libs/*.jar" -f src/main/docker/Dockerfile  -t knatarajan/json-tools .
+docker run -p 8080:8080 knatarajan/json-tools
+
+docker run -ti -p=8080:8080 knatarajan/json-tools
